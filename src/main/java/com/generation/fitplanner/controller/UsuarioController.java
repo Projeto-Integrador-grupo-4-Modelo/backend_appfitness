@@ -1,76 +1,80 @@
 package com.generation.fitplanner.controller;
 
-import java.util.Optional;
-
-
+import com.generation.fitplanner.model.Usuario;
+import com.generation.fitplanner.model.UsuarioLogin;
+import com.generation.fitplanner.repository.UsuarioRepository;
+import com.generation.fitplanner.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-import com.generation.fitplanner.model.Usuario;
-import com.generation.fitplanner.model.UsuarioLogin;
-import com.generation.fitplanner.repository.UsuarioRepository;
-import com.generation.fitplanner.service.UsuarioService;
-
-import jakarta.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UsuarioController {
 
-	@Autowired
-	private UsuarioService usuarioService;
+    @Autowired
+    private UsuarioService usuarioService;
 
-	@Autowired
-	private UsuarioRepository usuarioRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-	@GetMapping("/all")
-	public ResponseEntity<Page<Usuario>> getAll(@PageableDefault Pageable pageable) {
-		return ResponseEntity.ok(usuarioRepository.findAll(pageable));
-	}
+    @GetMapping("/all")
+    public ResponseEntity<Page<Usuario>> getAll(@PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(usuarioRepository.findAll(pageable));
+    }
 
-	@GetMapping("/{id}")
-	public ResponseEntity<Usuario> getById(@PathVariable Long id) {
-		return usuarioRepository.findById(id).map(resposta -> ResponseEntity.ok(resposta))
-				.orElse(ResponseEntity.notFound().build());
-	}
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> getById(@PathVariable Long id) {
+        return usuarioRepository.findById(id).map(resposta -> ResponseEntity.ok(resposta))
+                .orElse(ResponseEntity.notFound().build());
+    }
 
-	@PostMapping("/logar")
-	public ResponseEntity<UsuarioLogin> autenticarUsuario(@RequestBody Optional<UsuarioLogin> usuarioLogin) {
+    @PostMapping("/logar")
+    public ResponseEntity<UsuarioLogin> autenticarUsuario(@RequestBody Optional<UsuarioLogin> usuarioLogin) {
 
-		return usuarioService.autenticarUsuario(usuarioLogin)
-				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
-				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
-	}
+        return usuarioService.autenticarUsuario(usuarioLogin)
+                .map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+    }
 
-	@PostMapping("/cadastrar")
-	public ResponseEntity<Usuario> postUsuario(@RequestBody @Valid Usuario usuario) {
-	
-		return usuarioService.cadastrarUsuario(usuario)
-				.map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(resposta))
-				.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+    @PostMapping("/cadastrar")
+    public ResponseEntity<Usuario> postUsuario(@RequestBody @Valid Usuario usuario) {
+        System.out.println(usuario.getTipo());
+        return usuarioService.cadastrarUsuario(usuario)
+                .map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(resposta))
+                .orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
 
-	}
+    }
 
-	@PutMapping("/atualizar")
-	public ResponseEntity<Usuario> putUsuario(@Valid @RequestBody Usuario usuario) {
+    @PutMapping("/atualizar")
+    public ResponseEntity<Usuario> putUsuario(@Valid @RequestBody Usuario usuario) {
 
-		return usuarioService.atualizarUsuario(usuario)
-				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
-				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        return usuarioService.atualizarUsuario(usuario)
+                .map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 
-	}
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+
+        if (usuarioOptional.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        usuarioRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }
