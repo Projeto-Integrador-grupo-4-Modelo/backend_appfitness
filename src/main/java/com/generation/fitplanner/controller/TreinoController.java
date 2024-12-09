@@ -50,6 +50,12 @@ public class TreinoController {
 		return ResponseEntity.ok(treinoRepository.findAllByNomeTreinoContainingIgnoreCase(nomeTreino, pageable));
 	}
 
+	@GetMapping("/usuario/{id}")
+	public ResponseEntity<Page<Treino>> getByUsuario(@PathVariable Long id, @PageableDefault Pageable pageable){
+
+		return ResponseEntity.ok(treinoRepository.listarTreinoPorUsuario(id, pageable));
+	}
+
 	@PostMapping
 	public ResponseEntity<Treino> post(@Valid @RequestBody Treino treino) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(treinoRepository.save(treino));

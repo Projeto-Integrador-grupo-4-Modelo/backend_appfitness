@@ -40,7 +40,7 @@ public class Treino {
 	}
 
 	@ManyToOne
-	@JsonIgnoreProperties
+	@JsonIgnoreProperties("treino")
 	private Exercicio exercicio;
 	
 	@ManyToOne
