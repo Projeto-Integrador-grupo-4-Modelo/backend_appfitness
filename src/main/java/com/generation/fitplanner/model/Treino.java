@@ -28,6 +28,17 @@ public class Treino {
 	@NotNull
 	private Integer duracaoMin;
 	
+	@NotBlank
+    private String categoria;
+	
+	public String getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
+
 	@ManyToOne
 	@JsonIgnoreProperties
 	private Exercicio exercicio;

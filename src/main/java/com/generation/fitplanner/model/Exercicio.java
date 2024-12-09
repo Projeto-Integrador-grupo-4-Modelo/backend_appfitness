@@ -20,22 +20,24 @@ import jakarta.validation.constraints.NotNull;
 public class Exercicio {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	@NotBlank
-    private String nomeExercicio;
-   
+	private String nomeExercicio;
+
 	@NotNull
-    private Integer repeticoes;
-    
+	private Integer repeticoes;
+
 	@NotNull
-    private Integer series;
-	
-	
+	private Integer series;
+
+	@NotBlank
+	private String instrucao;
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "exercicio", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("exercicio")
-	private List <Treino> treino;
+	private List<Treino> treino;
 
 	public Long getId() {
 		return id;
@@ -76,8 +78,13 @@ public class Exercicio {
 	public void setTreino(List<Treino> treino) {
 		this.treino = treino;
 	}
-	
-	
 
+	public String getInstrucao() {
+		return instrucao;
+	}
+
+	public void setInstrucao(String instrucao) {
+		this.instrucao = instrucao;
+	}
 
 }
