@@ -32,7 +32,7 @@ public class UsuarioService {
 
 		if (usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())
 			return Optional.empty();
-
+		usuario.setImc(calcularIMC(usuario.getPeso(), usuario.getAltura()));
 		usuario.setSenha(criptografarSenha(usuario.getSenha()));
 
 		return Optional.of(usuarioRepository.save(usuario));
@@ -97,6 +97,24 @@ public class UsuarioService {
 
 	private String gerarToken(String usuario) {
 		return "Bearer " + jwtService.generateToken(usuario);
+	}
+
+	private String calcularIMC(double peso, double altura) {
+		System.out.println(peso + " " + altura + " ");
+		if (altura <= 0) {
+			throw new IllegalArgumentException("Altura deve ser maior que 0");
+		}
+		double imc = peso / (altura * altura);
+
+		if (imc < 18.5) {
+			return "Abaixo do peso";
+		} else if (imc > 18.5 && imc < 24.9) {
+			return "Peso normal";
+		} else if (imc > 24.9 && imc < 29.9) {
+			return "Sobrepeso";
+		} else {
+			return "Obesidade";
+		}
 	}
 
 }

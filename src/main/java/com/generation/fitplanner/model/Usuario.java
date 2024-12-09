@@ -3,6 +3,7 @@ package com.generation.fitplanner.model;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -39,11 +40,17 @@ public class Usuario {
 	@Size(max = 5000, message = "O link da foto não pode ser maior do que 5000 caracteres")
 	private String foto;
 
+	private String imc;
+
+	@NotNull
+	private double altura;
+
+	@NotNull
+	private double peso;
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("usuario")
 	private List<Treino> treino;
-
-
 
 	public Long getId() {
 		return this.id;
@@ -90,6 +97,34 @@ public class Usuario {
 	}
 
 	public void setPostagem(List<Treino> treino) {
+		this.treino = treino;
+	}
+
+	public String getImc() {
+		return imc;
+	}
+
+	public void setImc(String imc) {
+		this.imc = imc;
+	}
+
+	public Double getAltura() {
+		return altura;
+	}
+
+	public void setAltura(Double altura) {
+		this.altura = altura;
+	}
+
+	public Double getPeso() {
+		return peso;
+	}
+
+	public void setPeso(Double peso) {
+		this.peso = peso;
+	}
+
+	public void setTreino(List<Treino> treino) {
 		this.treino = treino;
 	}
 
