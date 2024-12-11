@@ -1,12 +1,10 @@
 package com.generation.fitplanner.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,8 +33,8 @@ public class TreinoController {
 	private TreinoRepository treinoRepository;
 
 	@GetMapping
-	public ResponseEntity<Page<Treino>> getAll(@PageableDefault Pageable pageable) {
-		return ResponseEntity.ok(treinoRepository.findAll(pageable));
+	public ResponseEntity<List<Treino>> getAll() {
+		return ResponseEntity.ok(treinoRepository.findAll());
 	}
 
 	@GetMapping("/{id}")
@@ -46,14 +44,14 @@ public class TreinoController {
 	}
 
 	@GetMapping("/nomeTreino/{nomeTreino}")
-	public ResponseEntity<Page<Treino>> getByTitulo(@PathVariable String nomeTreino, @PageableDefault Pageable pageable) {
-		return ResponseEntity.ok(treinoRepository.findAllByNomeTreinoContainingIgnoreCase(nomeTreino, pageable));
+	public ResponseEntity<List<Treino>> getByTitulo(@PathVariable String nomeTreino) {
+		return ResponseEntity.ok(treinoRepository.findAllByNomeTreinoContainingIgnoreCase(nomeTreino));
 	}
 
 	@GetMapping("/usuario/{id}")
-	public ResponseEntity<Page<Treino>> getByUsuario(@PathVariable Long id, @PageableDefault Pageable pageable){
+	public ResponseEntity<List<Treino>> getByUsuario(@PathVariable Long id){
 
-		return ResponseEntity.ok(treinoRepository.listarTreinoPorUsuario(id, pageable));
+		return ResponseEntity.ok(treinoRepository.listarTreinoPorUsuario(id);
 	}
 
 	@PostMapping

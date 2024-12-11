@@ -45,8 +45,24 @@ public class Usuario {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties("usuario")
     private List<Treino> treino;
+    
+    public Usuario(Long id, String nome, String usuario, String senha, String foto,String imc, double altura, double peso, String tipo) {
+		this.id = id;
+		this.nome = nome;
+		this.usuario = usuario;
+		this.senha = senha;
+		this.foto = foto;
+		this.imc = imc;
+		this.altura = altura;
+		this.peso = peso;
+		this.tipo = tipo;
+	}
+    
+    public Usuario() {
+    	
+    }
 
-    public Long getId() {
+	public Long getId() {
         return this.id;
     }
 

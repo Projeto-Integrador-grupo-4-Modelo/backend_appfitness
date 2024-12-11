@@ -58,8 +58,9 @@ public class BasicSecurityConfig {
 				.csrf(csrf -> csrf.disable()).cors(withDefaults());
 
 		http.authorizeHttpRequests((auth) -> auth.requestMatchers("/usuarios/logar").permitAll()
-				.requestMatchers("/usuarios/cadastrar").permitAll().requestMatchers("/error/**").permitAll()
-				.requestMatchers(HttpMethod.OPTIONS).permitAll().anyRequest().authenticated())
+				.requestMatchers("/usuarios/cadastrar").permitAll().requestMatchers("/exercicios").permitAll().requestMatchers("/error/**").permitAll()
+				.requestMatchers(HttpMethod.OPTIONS).permitAll()
+				.requestMatchers("/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**").permitAll().anyRequest().authenticated())
 				.authenticationProvider(authenticationProvider())
 				.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class).httpBasic(withDefaults());
 

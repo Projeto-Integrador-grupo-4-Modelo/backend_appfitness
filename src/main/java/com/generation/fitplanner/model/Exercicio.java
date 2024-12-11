@@ -38,6 +38,18 @@ public class Exercicio {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "exercicio", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("exercicio")
 	private List<Treino> treino;
+	
+	public Exercicio(Long id, String nomeExercicio, Integer repeticoes, Integer series,String instrucao) {
+		this.id = id;
+		this.nomeExercicio = nomeExercicio;
+		this.repeticoes = repeticoes;
+		this.series = series;
+		this.instrucao = instrucao;
+	}
+	
+	public Exercicio() {
+		
+	}
 
 	public Long getId() {
 		return id;

@@ -1,11 +1,9 @@
 package com.generation.fitplanner.controller;
 
+import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,8 +32,8 @@ public class ExercicioController {
 	private ExercicioRepository exercicioRepository;
 
 	@GetMapping
-	public ResponseEntity<Page<Exercicio>> getAll(@PageableDefault Pageable pageable) {
-		Page<Exercicio> exercicioPage = exercicioRepository.findAll(pageable);
+	public ResponseEntity<List<Exercicio>> getAll() {
+		List<Exercicio> exercicioPage = exercicioRepository.findAll();
 		return ResponseEntity.ok(exercicioPage);
 	}
 
@@ -46,8 +44,8 @@ public class ExercicioController {
 	}
 
 	@GetMapping("/nomeExercicio/{nomeExercicio}")
-	public ResponseEntity<Page<Exercicio>> getByTitulo(@PathVariable String nomeExercicio, @PageableDefault Pageable pageable) {
-		return ResponseEntity.ok(exercicioRepository.findAllByNomeExercicioContainingIgnoreCase(nomeExercicio, pageable));
+	public ResponseEntity<List<Exercicio>> getByTitulo(@PathVariable String nomeExercicio) {
+		return ResponseEntity.ok(exercicioRepository.findAllByNomeExercicioContainingIgnoreCase(nomeExercicio));
 	}
 
 	@PostMapping
