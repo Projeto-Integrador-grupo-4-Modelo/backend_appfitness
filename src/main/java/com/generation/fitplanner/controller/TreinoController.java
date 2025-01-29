@@ -51,7 +51,7 @@ public class TreinoController {
 	@GetMapping("/usuario/{id}")
 	public ResponseEntity<List<Treino>> getByUsuario(@PathVariable Long id){
 
-		return ResponseEntity.ok(treinoRepository.listarTreinoPorUsuario(id);
+		return ResponseEntity.ok(treinoRepository.listarTreinoPorUsuario(id));
 	}
 
 	@PostMapping
